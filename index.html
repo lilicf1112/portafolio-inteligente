@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portafolio Inteligente</title>
+
+  <style>
+    /* ===========================================================
+       PALETA Y ESTILO GENERAL
+       =========================================================== */
+    :root {
+      --bg: #f3f8ff;
+      --panel: #ffffff;
+      --primary: #1e5fd8;
+      --primary-soft: #eaf2ff;
+      --secondary: #0f9f7c;
+      --secondary-soft: #eafaf5;
+      --warning: #f7c86d;
+      --warning-soft: #fff7e6;
+      --text: #1d2a3a;
+      --muted: #64748b;
+      --border: #dfeaf7;
+      --shadow: 0 12px 30px rgba(28, 63, 112, 0.12);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(30, 95, 216, 0.12), transparent 25%),
+        radial-gradient(circle at bottom right, rgba(15, 159, 124, 0.12), transparent 22%),
+        var(--bg);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 40px auto;
+      padding: 24px;
+    }
+
+    .app-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #eef5ff 0%, #f7fbff 100%);
+      padding: 32px 28px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: inline-block;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 8px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.15;
+      color: var(--text);
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin: 12px 0 0;
+      font-size: 1rem;
+      line-height: 1.6;
+      max-width: 680px;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      padding: 28px;
+    }
+
+    /* ===========================================================
+       FORMULARIO
+       =========================================================== */
+    .form-panel {
+      background: #fcfdff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+
+    .field-group {
+      margin-bottom: 22px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 700;
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    .money-input {
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      font-size: 1.05rem;
+      background: #fff;
+      color: var(--text);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .money-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(30, 95, 216, 0.1);
+    }
+
+    .risk-options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .risk-option {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 14px;
+      padding: 14px 15px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-align: left;
+      width: 100%;
+    }
+
+    .risk-option:hover {
+      border-color: rgba(30, 95, 216, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .risk-option.active {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+      box-shadow: 0 0 0 4px rgba(30, 95, 216, 0.07);
+    }
+
+    .risk-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+
+    .risk-name {
+      font-weight: 700;
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    .risk-badge {
+      background: #dbeafe;
+      color: var(--primary);
+      border-radius: 999px;
+      font-size: 0.7rem;
+      padding: 6px 8px;
+      font-weight: 700;
+    }
+
+    .risk-detail {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .cta-button {
+      width: 100%;
+      border: none;
+      background: linear-gradient(135deg, var(--primary) 0%, #2b76ff 100%);
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 16px 18px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 12px 20px rgba(30, 95, 216, 0.2);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 24px rgba(30, 95, 216, 0.26);
+    }
+
+    .cta-button:active {
+      transform: translateY(0);
+    }
+
+    /* ===========================================================
+       TARJETA DE RESULTADOS
+       =========================================================== */
+    .result-panel {
+      background: linear-gradient(180deg, #f9fcff 0%, #ffffff 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .result-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .mini-tag {
+      background: var(--secondary-soft);
+      color: var(--secondary);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .summary-box {
+      background: #f6fbff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .summary-label {
+      color: var(--muted);
+      margin: 0 0 8px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .summary-value {
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 800;
+      margin: 0;
+      color: var(--text);
+    }
+
+    .breakdown {
+      margin-top: 18px;
+    }
+
+    .breakdown h3 {
+      margin: 0 0 12px;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+
+    .item-name {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .item-amount {
+      font-weight: 700;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+
+    .alert {
+      margin-top: 18px;
+      border-radius: 12px;
+      padding: 14px 16px;
+      border: 1px solid transparent;
+      font-size: 0.96rem;
+      line-height: 1.5;
+    }
+
+    .alert.success {
+      background: var(--secondary-soft);
+      border-color: rgba(15, 159, 124, 0.2);
+      color: #155a49;
+    }
+
+    .alert.warning {
+      background: var(--warning-soft);
+      border-color: rgba(247, 200, 109, 0.35);
+      color: #855d02;
+    }
+
+    .alert strong {
+      font-weight: 800;
+    }
+
+    .helper-text {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    /* ===========================================================
+       RESPONSIVE
+       =========================================================== */
+    @media (max-width: 760px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+
+      .container {
+        margin: 20px auto;
+        padding: 12px;
+      }
+
+      .hero,
+      .content {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .form-panel,
+      .result-panel {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="app-card">
+      <!-- Encabezado principal -->
+      <header class="hero">
+        <div class="brand">Portafolio Inteligente</div>
+        <h1>Tu Asistente Financiero Seguro</h1>
+        <p class="subtitle">
+          Organiza tu dinero con calma y claridad. Aquí podrás ver una distribución simple,
+          moderna y pensada para empezar sin complicarte la vida.
+        </p>
+      </header>
+
+      <!-- Cuerpo principal con formulario y resultado -->
+      <main class="content">
+        <!-- FORMULARIO -->
+        <section class="form-panel">
+          <form id="moneyForm">
+            <div class="field-group">
+              <label for="amount">¿Cuánto dinero deseas organizar hoy? ($)</label>
+              <input
+                id="amount"
+                class="money-input"
+                type="number"
+                min="1"
+                step="1"
+                placeholder="Ejemplo: 5000"
+                required
+              />
+            </div>
+
+            <div class="field-group">
+              <label>Perfil de riesgo</label>
+
+              <!-- Mantener nombres claros para principiantes -->
+              <div class="risk-options">
+                <button type="button" class="risk-option active" data-risk="conservador">
+                  <div class="risk-top">
+                    <span class="risk-name">Conservador</span>
+                    <span class="risk-badge">Seguro</span>
+                  </div>
+                  <div class="risk-detail">70% Activos Estables, 30% Cripto Segura</div>
+                </button>
+
+                <button type="button" class="risk-option" data-risk="moderado">
+                  <div class="risk-top">
+                    <span class="risk-name">Moderado</span>
+                    <span class="risk-badge">Equilibrado</span>
+                  </div>
+                  <div class="risk-detail">50% ETFs/Acciones, 30% Dólar Digital, 20% Cripto</div>
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" class="cta-button">Calcular Distribución Segura</button>
+          </form>
+        </section>
+
+        <!-- RESULTADO -->
+        <section class="result-panel" aria-live="polite">
+          <div class="result-header">
+            <h2 class="result-title">Resumen de tu plan</h2>
+            <span class="mini-tag" id="riskTag">Conservador</span>
+          </div>
+
+          <div class="summary-box">
+            <p class="summary-label">Monto total</p>
+            <p class="summary-value" id="totalDisplay">$0</p>
+          </div>
+
+          <div class="breakdown">
+            <h3>Desglose sugerido</h3>
+            <ul id="breakdownList" class="list">
+              <!-- Se llenará con JavaScript -->
+            </ul>
+          </div>
+
+          <div id="assistantAlert" class="alert success">
+            <strong>Alerta del Asistente:</strong> Tu plan está diseñado para ayudarte a empezar con calma y organización.
+          </div>
+
+          <p class="helper-text">
+            La idea es proteger tu dinero, mantenerlo claro y evitar decisiones impulsivas.
+          </p>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // ===========================================================
+    // CONFIGURACIÓN DE PERFILES DE RIESGO
+    // ===========================================================
+    // Un perfil representa cómo se dividiría el dinero según el nivel de prudencia.
+    // Se usa lenguaje sencillo para que el usuario entienda mejor.
+    const profiles = {
+      conservador: {
+        name: "Conservador",
+        label: "Seguro",
+        items: [
+          { name: "Activos Estables", percent: 70 },
+          { name: "Cripto Segura", percent: 30 }
+        ],
+        message: "Este plan prioriza la calma y la protección del dinero."
+      },
+      moderado: {
+        name: "Moderado",
+        label: "Equilibrado",
+        items: [
+          { name: "ETFs/Acciones", percent: 50 },
+          { name: "Dólar Digital", percent: 30 },
+          { name: "Cripto", percent: 20 }
+        ],
+        message: "Este plan busca equilibrio para que empieces con una mezcla más variada."
+      }
+    };
+
+    // Variable para guardar la opción seleccionada (por defecto: conservador)
+    let selectedRisk = "conservador";
+
+    // ===========================================================
+    // ELEMENTOS DEL DOM
+    // ===========================================================
+    const form = document.getElementById("moneyForm");
+    const amountInput = document.getElementById("amount");
+    const riskOptions = document.querySelectorAll(".risk-option");
+    const riskTag = document.getElementById("riskTag");
+    const totalDisplay = document.getElementById("totalDisplay");
+    const breakdownList = document.getElementById("breakdownList");
+    const assistantAlert = document.getElementById("assistantAlert");
+
+    // ===========================================================
+    // FUNCIONES DE AYUDA
+    // ===========================================================
+    // Formatear un monto para que se vea claro en pesos
+    function formatMoney(value) {
+      return new Intl.NumberFormat("es-AR", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0
+      }).format(value);
+    }
+
+    // Seleccionar un perfil de riesgo
+    function setSelectedRisk(riskKey) {
+      selectedRisk = riskKey;
+
+      riskOptions.forEach(option => {
+        const isActive = option.dataset.risk === riskKey;
+        option.classList.toggle("active", isActive);
+      });
+
+      const profile = profiles[riskKey];
+      riskTag.textContent = profile.name;
+    }
+
+    // Crear filas del desglose con el monto exacto
+    function updateBreakdown(totalAmount, profile) {
+      breakdownList.innerHTML = "";
+
+      profile.items.forEach(item => {
+        const amount = (totalAmount * item.percent) / 100;
+
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <span class="item-name">${item.name}</span>
+          <span class="item-amount">${formatMoney(amount)}</span>
+        `;
+
+        breakdownList.appendChild(li);
+      });
+    }
+
+    // Generar alerta del asistente según el perfil y el monto
+    function updateAssistantAlert(amount, profile) {
+      let message = "";
+      let alertClass = "success";
+
+      if (amount < 1000) {
+        message = `
+          <strong>Alerta del Asistente:</strong> ${profile.message}
+          Con este monto, es excelente empezar con pasos pequeños y mantener una estrategia simple.
+        `;
+        alertClass = "warning";
+      } else if (amount >= 1000 && amount < 10000) {
+        message = `
+          <strong>Alerta del Asistente:</strong> ${profile.message}
+          Este monto te permite repartirlo con orden y mantener una base más sólida para tus metas.
+        `;
+        alertClass = "success";
+      } else {
+        message = `
+          <strong>Alerta del Asistente:</strong> ${profile.message}
+          Con una cantidad mayor, es útil mantener un plan claro y no mover el dinero por emociones.
+        `;
+        alertClass = "success";
+      }
+
+      assistantAlert.className = `alert ${alertClass}`;
+      assistantAlert.innerHTML = message;
+    }
+
+    // ===========================================================
+    // EVENTOS
+    // ===========================================================
+    // 1) Cuando el usuario hace clic en un perfil, se activa
+    riskOptions.forEach(button => {
+      button.addEventListener("click", () => {
+        setSelectedRisk(button.dataset.risk);
+      });
+    });
+
+    // 2) Cuando el usuario envía el formulario, se calcula el desglose
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const amount = Number(amountInput.value);
+
+      if (!amount || amount <= 0) {
+        alert("Por favor, ingresa un monto válido mayor a 0.");
+        amountInput.focus();
+        return;
+      }
+
+      const profile = profiles[selectedRisk];
+
+      // Mostrar el total
+      totalDisplay.textContent = formatMoney(amount);
+
+      // Mostrar desglose
+      updateBreakdown(amount, profile);
+
+      // Mostrar alerta del asistente
+      updateAssistantAlert(amount, profile);
+    });
+  </script>
+</body>
+</html>

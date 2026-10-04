@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portafolio Inteligente</title>
+  <title>Portafolio Inteligente - Finanzas para Principiantes</title>
 
   <style>
     /* ===========================================================
@@ -18,6 +18,8 @@
       --secondary-soft: #eafaf5;
       --warning: #f7c86d;
       --warning-soft: #fff7e6;
+      --danger: #e53e3e;
+      --danger-soft: #fff5f5;
       --text: #1d2a3a;
       --muted: #64748b;
       --border: #dfeaf7;
@@ -35,17 +37,18 @@
 
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       background:
         radial-gradient(circle at top left, rgba(30, 95, 216, 0.12), transparent 25%),
         radial-gradient(circle at bottom right, rgba(15, 159, 124, 0.12), transparent 22%),
         var(--bg);
       color: var(--text);
+      line-height: 1.6;
     }
 
     .container {
-      max-width: 980px;
-      margin: 40px auto;
+      max-width: 1200px;
+      margin: 0 auto;
       padding: 24px;
     }
 
@@ -91,11 +94,73 @@
       max-width: 680px;
     }
 
+    /* ===========================================================
+       NAVEGACIÓN / PESTAÑAS
+       =========================================================== */
+    .tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      background: #fafbfc;
+      padding: 0 28px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+    }
+
+    .tab-button {
+      background: none;
+      border: none;
+      padding: 16px 20px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+    }
+
+    .tab-button:hover {
+      color: var(--text);
+    }
+
+    .tab-button.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ===========================================================
+       CONTENIDO
+       =========================================================== */
     .content {
+      padding: 28px;
+    }
+
+    .grid-2 {
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
       gap: 24px;
-      padding: 28px;
+      margin-bottom: 28px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
     }
 
     /* ===========================================================
@@ -120,7 +185,8 @@
       font-size: 1rem;
     }
 
-    .money-input {
+    .money-input,
+    .select-input {
       width: 100%;
       padding: 16px 18px;
       border-radius: 12px;
@@ -129,9 +195,11 @@
       background: #fff;
       color: var(--text);
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      font-family: inherit;
     }
 
-    .money-input:focus {
+    .money-input:focus,
+    .select-input:focus {
       outline: none;
       border-color: var(--primary);
       box-shadow: 0 0 0 4px rgba(30, 95, 216, 0.1);
@@ -218,8 +286,17 @@
       transform: translateY(0);
     }
 
+    .cta-button-secondary {
+      background: linear-gradient(135deg, var(--secondary) 0%, #1abc9c 100%);
+      box-shadow: 0 12px 20px rgba(15, 159, 124, 0.2);
+    }
+
+    .cta-button-secondary:hover {
+      box-shadow: 0 16px 24px rgba(15, 159, 124, 0.26);
+    }
+
     /* ===========================================================
-       TARJETA DE RESULTADOS
+       TARJETAS DE RESULTADOS
        =========================================================== */
     .result-panel {
       background: linear-gradient(180deg, #f9fcff 0%, #ffffff 100%);
@@ -335,6 +412,12 @@
       color: #855d02;
     }
 
+    .alert.info {
+      background: var(--primary-soft);
+      border-color: rgba(30, 95, 216, 0.2);
+      color: #1e3a8a;
+    }
+
     .alert strong {
       font-weight: 800;
     }
@@ -347,27 +430,263 @@
     }
 
     /* ===========================================================
+       CRYPTO CARDS - PRECIOS EN TIEMPO REAL
+       =========================================================== */
+    .crypto-card {
+      background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.25s ease;
+    }
+
+    .crypto-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(30, 95, 216, 0.1);
+    }
+
+    .crypto-info {
+      flex: 1;
+    }
+
+    .crypto-name {
+      font-weight: 700;
+      color: var(--text);
+      font-size: 1rem;
+      margin: 0 0 4px;
+    }
+
+    .crypto-description {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .crypto-price {
+      text-align: right;
+    }
+
+    .price-value {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .price-change {
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin: 4px 0 0;
+    }
+
+    .price-change.positive {
+      color: var(--secondary);
+    }
+
+    .price-change.negative {
+      color: var(--danger);
+    }
+
+    .loading {
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* ===========================================================
+       PLAN INTELIGENTE - DCA
+       =========================================================== */
+    .dca-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .projection-chart {
+      background: #f6fbff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .projection-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      background: #ffffff;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .projection-period {
+      font-weight: 600;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .projection-value {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .projection-bar {
+      width: 100%;
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .projection-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+      transition: width 0.5s ease;
+    }
+
+    /* ===========================================================
+       CHECKLIST
+       =========================================================== */
+    .checklist {
+      display: grid;
+      gap: 12px;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .checklist-item:hover {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    .checklist-item.checked {
+      background: var(--secondary-soft);
+      border-color: var(--secondary);
+    }
+
+    .checklist-checkbox {
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: all 0.2s ease;
+      margin-top: 2px;
+    }
+
+    .checklist-item.checked .checklist-checkbox {
+      background: var(--secondary);
+      border-color: var(--secondary);
+      color: white;
+    }
+
+    .checklist-text {
+      flex: 1;
+    }
+
+    .checklist-question {
+      font-weight: 700;
+      color: var(--text);
+      margin: 0 0 4px;
+      font-size: 1rem;
+    }
+
+    .checklist-hint {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    /* ===========================================================
+       EDUCACIÓN
+       =========================================================== */
+    .education-card {
+      background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .education-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0 0 8px;
+    }
+
+    .education-content {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .education-highlight {
+      background: var(--warning-soft);
+      border-left: 4px solid var(--warning);
+      padding: 12px 14px;
+      border-radius: 6px;
+      margin: 12px 0;
+      font-size: 0.95rem;
+      color: #855d02;
+    }
+
+    /* ===========================================================
        RESPONSIVE
        =========================================================== */
     @media (max-width: 760px) {
-      .content {
+      .grid-2,
+      .dca-container {
         grid-template-columns: 1fr;
       }
 
-      .container {
-        margin: 20px auto;
-        padding: 12px;
+      .tabs {
+        padding: 0 18px;
       }
 
-      .hero,
+      .tab-button {
+        padding: 12px 16px;
+        font-size: 0.95rem;
+      }
+
       .content {
+        padding: 18px;
+      }
+
+      .hero {
         padding-left: 18px;
         padding-right: 18px;
       }
 
-      .form-panel,
-      .result-panel {
-        padding: 18px;
+      h1 {
+        font-size: 1.8rem;
       }
     }
   </style>
@@ -381,84 +700,299 @@
         <div class="brand">Portafolio Inteligente</div>
         <h1>Tu Asistente Financiero Seguro</h1>
         <p class="subtitle">
-          Organiza tu dinero con calma y claridad. Aquí podrás ver una distribución simple,
-          moderna y pensada para empezar sin complicarte la vida.
+          Organiza tu dinero con calma y claridad. Acciones, criptomonedas y planes automáticos
+          pensados para principiantes que quieren empezar sin complicarse la vida.
         </p>
       </header>
 
-      <!-- Cuerpo principal con formulario y resultado -->
-      <main class="content">
-        <!-- FORMULARIO -->
-        <section class="form-panel">
-          <form id="moneyForm">
+      <!-- NAVEGACIÓN POR PESTAÑAS -->
+      <div class="tabs">
+        <button class="tab-button active" onclick="switchTab('distribucion')">📊 Distribución</button>
+        <button class="tab-button" onclick="switchTab('precios')">💱 Precios en Vivo</button>
+        <button class="tab-button" onclick="switchTab('dca')">💰 Plan Automático</button>
+        <button class="tab-button" onclick="switchTab('educacion')">📚 Educación e Impuestos</button>
+      </div>
+
+      <!-- ===============================================================
+           PESTAÑA 1: DISTRIBUCIÓN
+           =============================================================== -->
+      <div id="distribucion" class="tab-content active">
+        <div class="content">
+          <div class="grid-2">
+            <!-- FORMULARIO -->
+            <section class="form-panel">
+              <form id="moneyForm">
+                <div class="field-group">
+                  <label for="amount">¿Cuánto dinero deseas organizar hoy? ($)</label>
+                  <input
+                    id="amount"
+                    class="money-input"
+                    type="number"
+                    min="1"
+                    step="1"
+                    placeholder="Ejemplo: 5000"
+                    required
+                  />
+                </div>
+
+                <div class="field-group">
+                  <label>Perfil de riesgo</label>
+                  <div class="risk-options">
+                    <button type="button" class="risk-option active" data-risk="conservador">
+                      <div class="risk-top">
+                        <span class="risk-name">Conservador</span>
+                        <span class="risk-badge">Seguro</span>
+                      </div>
+                      <div class="risk-detail">70% Activos Estables, 30% Cripto Segura</div>
+                    </button>
+
+                    <button type="button" class="risk-option" data-risk="moderado">
+                      <div class="risk-top">
+                        <span class="risk-name">Moderado</span>
+                        <span class="risk-badge">Equilibrado</span>
+                      </div>
+                      <div class="risk-detail">50% ETFs/Acciones, 30% Dólar Digital, 20% Cripto</div>
+                    </button>
+                  </div>
+                </div>
+
+                <button type="submit" class="cta-button">Calcular Distribución Segura</button>
+              </form>
+            </section>
+
+            <!-- RESULTADO -->
+            <section class="result-panel" aria-live="polite">
+              <div class="result-header">
+                <h2 class="result-title">Resumen de tu plan</h2>
+                <span class="mini-tag" id="riskTag">Conservador</span>
+              </div>
+
+              <div class="summary-box">
+                <p class="summary-label">Monto total</p>
+                <p class="summary-value" id="totalDisplay">$0</p>
+              </div>
+
+              <div class="breakdown">
+                <h3>Desglose sugerido</h3>
+                <ul id="breakdownList" class="list"></ul>
+              </div>
+
+              <div id="assistantAlert" class="alert success">
+                <strong>Alerta del Asistente:</strong> Tu plan está diseñado para ayudarte a empezar con calma y organización.
+              </div>
+
+              <p class="helper-text">
+                La idea es proteger tu dinero, mantenerlo claro y evitar decisiones impulsivas.
+              </p>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===============================================================
+           PESTAÑA 2: PRECIOS EN VIVO (COINGECKO API)
+           =============================================================== -->
+      <div id="precios" class="tab-content">
+        <div class="content">
+          <h2 style="margin-top: 0;">Precios en Tiempo Real</h2>
+          <p style="color: var(--muted); margin-bottom: 20px;">
+            Los precios se actualizan automáticamente cada 30 segundos. El porcentaje verde o rojo
+            indica el cambio en las últimas 24 horas.
+          </p>
+
+          <div class="grid-3" id="cryptoContainer">
+            <!-- Se llena con JavaScript desde CoinGecko API -->
+          </div>
+
+          <div class="alert info" style="margin-top: 24px;">
+            <strong>💡 Tip de seguridad:</strong>
+            Los "Dólares Digitales" (USDT, USDC) son monedas que siempre valen 1 USD. Son útiles
+            para proteger tu dinero de la volatilidad sin salir del mundo cripto.
+          </div>
+        </div>
+      </div>
+
+      <!-- ===============================================================
+           PESTAÑA 3: PLAN AUTOMÁTICO (DCA)
+           =============================================================== -->
+      <div id="dca" class="tab-content">
+        <div class="content">
+          <h2 style="margin-top: 0;">Plan Inteligente de Inversión Automática</h2>
+          <p style="color: var(--muted); margin-bottom: 20px;">
+            Este plan simula un ahorro automático cada semana o mes. Es una estrategia llamada
+            "Dollar Cost Averaging" (DCA) que reduce el riesgo de invertir todo de una vez.
+          </p>
+
+          <div class="form-panel" style="margin-bottom: 28px;">
             <div class="field-group">
-              <label for="amount">¿Cuánto dinero deseas organizar hoy? ($)</label>
+              <label for="dcaAmount">¿Cuánto ahorrarás cada vez? ($)</label>
               <input
-                id="amount"
+                id="dcaAmount"
                 class="money-input"
                 type="number"
                 min="1"
                 step="1"
-                placeholder="Ejemplo: 5000"
-                required
+                placeholder="Ejemplo: 50"
+                value="50"
               />
             </div>
 
             <div class="field-group">
-              <label>Perfil de riesgo</label>
+              <label for="dcaFrequency">Frecuencia</label>
+              <select id="dcaFrequency" class="select-input">
+                <option value="weekly">Semanal (cada 7 días)</option>
+                <option value="monthly">Mensual (cada 30 días)</option>
+              </select>
+            </div>
 
-              <!-- Mantener nombres claros para principiantes -->
-              <div class="risk-options">
-                <button type="button" class="risk-option active" data-risk="conservador">
-                  <div class="risk-top">
-                    <span class="risk-name">Conservador</span>
-                    <span class="risk-badge">Seguro</span>
-                  </div>
-                  <div class="risk-detail">70% Activos Estables, 30% Cripto Segura</div>
-                </button>
+            <button type="button" class="cta-button cta-button-secondary" onclick="calculateDCA()">
+              Calcular Proyección
+            </button>
+          </div>
 
-                <button type="button" class="risk-option" data-risk="moderado">
-                  <div class="risk-top">
-                    <span class="risk-name">Moderado</span>
-                    <span class="risk-badge">Equilibrado</span>
-                  </div>
-                  <div class="risk-detail">50% ETFs/Acciones, 30% Dólar Digital, 20% Cripto</div>
-                </button>
+          <div class="dca-container">
+            <!-- Formulario ya está arriba -->
+            <div>
+              <h3>Simulación de 6 meses y 1 año</h3>
+              <div class="projection-chart" id="dcaProjection">
+                <p style="text-align: center; color: var(--muted);">
+                  Ingresa el monto y haz clic en "Calcular Proyección"
+                </p>
               </div>
             </div>
 
-            <button type="submit" class="cta-button">Calcular Distribución Segura</button>
-          </form>
-        </section>
-
-        <!-- RESULTADO -->
-        <section class="result-panel" aria-live="polite">
-          <div class="result-header">
-            <h2 class="result-title">Resumen de tu plan</h2>
-            <span class="mini-tag" id="riskTag">Conservador</span>
+            <div>
+              <h3>Activos Recomendados para DCA</h3>
+              <div id="dcaAssets">
+                <!-- Se llena dinámicamente -->
+              </div>
+            </div>
           </div>
 
-          <div class="summary-box">
-            <p class="summary-label">Monto total</p>
-            <p class="summary-value" id="totalDisplay">$0</p>
+          <div class="alert success">
+            <strong>¿Por qué DCA es bueno para principiantes?</strong>
+            Cuando inviertes el mismo monto regularmente, compras más cuando el precio baja
+            y menos cuando sube. Esto reduce el estrés y mejora tus resultados a largo plazo.
+          </div>
+        </div>
+      </div>
+
+      <!-- ===============================================================
+           PESTAÑA 4: EDUCACIÓN E IMPUESTOS
+           =============================================================== -->
+      <div id="educacion" class="tab-content">
+        <div class="content">
+          <h2 style="margin-top: 0;">Educación e Impuestos para Tomar Mejores Decisiones</h2>
+
+          <!-- CHECKLIST ANTES DE INVERTIR -->
+          <div style="margin-bottom: 28px;">
+            <h3 style="margin-top: 0;">✅ Checklist: ¿Estás listo para invertir?</h3>
+            <div class="checklist">
+              <div class="checklist-item" onclick="toggleChecklistItem(this)">
+                <div class="checklist-checkbox">✓</div>
+                <div class="checklist-text">
+                  <h4 class="checklist-question">¿Tienes un fondo de emergencia?</h4>
+                  <p class="checklist-hint">
+                    Antes de invertir, guarda 3-6 meses de gastos en una cuenta segura por si algo imprevisto ocurre.
+                  </p>
+                </div>
+              </div>
+
+              <div class="checklist-item" onclick="toggleChecklistItem(this)">
+                <div class="checklist-checkbox">✓</div>
+                <div class="checklist-text">
+                  <h4 class="checklist-question">¿Entiendes en qué activo pones tu dinero?</h4>
+                  <p class="checklist-hint">
+                    Si no entiendes cómo funciona, no inviertas. Lee sobre el activo primero (acciones, ETF, Bitcoin, etc.).
+                  </p>
+                </div>
+              </div>
+
+              <div class="checklist-item" onclick="toggleChecklistItem(this)">
+                <div class="checklist-checkbox">✓</div>
+                <div class="checklist-text">
+                  <h4 class="checklist-question">¿Es dinero que no necesitarás en meses?</h4>
+                  <p class="checklist-hint">
+                    El dinero invertido debe estar "congelado" por lo menos 6-12 meses. No inviertas lo que necesitas pronto.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div class="breakdown">
-            <h3>Desglose sugerido</h3>
-            <ul id="breakdownList" class="list">
-              <!-- Se llenará con JavaScript -->
-            </ul>
+          <!-- INFORMACIÓN SOBRE IMPUESTOS -->
+          <h3>📋 Impuestos: Lo que Debes Saber</h3>
+
+          <div class="education-card">
+            <h4 class="education-title">🏦 Ganancias de Capital</h4>
+            <p class="education-content">
+              Cuando compras una acción o cripto a $100 y la vendes a $150, ganaste $50.
+              Esa ganancia es "ganancia de capital" y muchos países la gravan (cobran impuestos).
+            </p>
+            <div class="education-highlight">
+              <strong>Importante:</strong> Si mantuviste la acción menos de 1 año, generalmente
+              pagan más impuestos que si la mantienes 1 año o más (depende de tu país).
+            </div>
           </div>
 
-          <div id="assistantAlert" class="alert success">
-            <strong>Alerta del Asistente:</strong> Tu plan está diseñado para ayudarte a empezar con calma y organización.
+          <div class="education-card">
+            <h4 class="education-title">💳 Retención en la Fuente</h4>
+            <p class="education-content">
+              Algunas plataformas (bancos, brokers) retienen automáticamente un porcentaje
+              de tus ganancias. En Argentina, por ejemplo, hay retención en transacciones de divisas.
+            </p>
+            <div class="education-highlight">
+              <strong>Consejo:</strong> Averigua qué retención aplica tu plataforma.
+              Si retienen 35%, ya no esperes recibir el 100%.
+            </div>
           </div>
 
-          <p class="helper-text">
-            La idea es proteger tu dinero, mantenerlo claro y evitar decisiones impulsivas.
-          </p>
-        </section>
-      </main>
+          <div class="education-card">
+            <h4 class="education-title">📝 Declaración de Impuestos</h4>
+            <p class="education-content">
+              En Argentina (y muchos países), debes declarar tus inversiones en criptomonedas
+              si superan ciertos montos. En CABA, por ejemplo, si tienes más de $12.200 USD en cripto,
+              hay impuesto a los bienes personales.
+            </p>
+            <div class="education-highlight">
+              <strong>Recomendación:</strong> Habla con un contador o asesor fiscal.
+              Es mejor declarar y pagar lo justo que meterse en problemas después.
+            </div>
+          </div>
+
+          <div class="education-card">
+            <h4 class="education-title">🌍 Diferencias por País</h4>
+            <p class="education-content">
+              Cada país tiene reglas diferentes. En EE. UU., las criptomonedas son "propiedad"
+              y gravan sus ganancias. En El Salvador, Bitcoin es moneda oficial. En Argentina,
+              hay impuesto a bienes personales.
+            </p>
+            <div class="education-highlight">
+              <strong>Paso 1:</strong> Averigua las leyes de tu país.
+              <br><strong>Paso 2:</strong> Consulta un asesor fiscal si es mucho dinero.
+            </div>
+          </div>
+
+          <div class="education-card">
+            <h4 class="education-title">✨ Consejos Finales</h4>
+            <p class="education-content">
+              1. <strong>Guarda comprobantes:</strong> Cada compra y venta. Así justificas qué pasó con tu dinero.
+              <br><br>
+              2. <strong>No escondas dinero:</strong> Es más caro el arreglo que el impuesto justo.
+              <br><br>
+              3. <strong>Invierte solo lo que puedas perder:</strong> Especialmente en cripto. No te endeudes.
+              <br><br>
+              4. <strong>Mantén registros:</strong> Screenshots, planillas Excel. Ayudan al contador.
+            </p>
+          </div>
+
+          <div class="alert warning">
+            <strong>⚠️ Disclaimer:</strong> Este es solo información educativa. No es asesoramiento fiscal ni legal.
+            Consulta siempre con profesionales calificados en tu país antes de hacer inversiones grandes.
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -466,8 +1000,6 @@
     // ===========================================================
     // CONFIGURACIÓN DE PERFILES DE RIESGO
     // ===========================================================
-    // Un perfil representa cómo se dividiría el dinero según el nivel de prudencia.
-    // Se usa lenguaje sencillo para que el usuario entienda mejor.
     const profiles = {
       conservador: {
         name: "Conservador",
@@ -490,7 +1022,6 @@
       }
     };
 
-    // Variable para guardar la opción seleccionada (por defecto: conservador)
     let selectedRisk = "conservador";
 
     // ===========================================================
@@ -507,7 +1038,6 @@
     // ===========================================================
     // FUNCIONES DE AYUDA
     // ===========================================================
-    // Formatear un monto para que se vea claro en pesos
     function formatMoney(value) {
       return new Intl.NumberFormat("es-AR", {
         style: "currency",
@@ -516,37 +1046,29 @@
       }).format(value);
     }
 
-    // Seleccionar un perfil de riesgo
     function setSelectedRisk(riskKey) {
       selectedRisk = riskKey;
-
       riskOptions.forEach(option => {
         const isActive = option.dataset.risk === riskKey;
         option.classList.toggle("active", isActive);
       });
-
       const profile = profiles[riskKey];
       riskTag.textContent = profile.name;
     }
 
-    // Crear filas del desglose con el monto exacto
     function updateBreakdown(totalAmount, profile) {
       breakdownList.innerHTML = "";
-
       profile.items.forEach(item => {
         const amount = (totalAmount * item.percent) / 100;
-
         const li = document.createElement("li");
         li.innerHTML = `
           <span class="item-name">${item.name}</span>
           <span class="item-amount">${formatMoney(amount)}</span>
         `;
-
         breakdownList.appendChild(li);
       });
     }
 
-    // Generar alerta del asistente según el perfil y el monto
     function updateAssistantAlert(amount, profile) {
       let message = "";
       let alertClass = "success";
@@ -576,19 +1098,16 @@
     }
 
     // ===========================================================
-    // EVENTOS
+    // EVENTOS - FORMULARIO DE DISTRIBUCIÓN
     // ===========================================================
-    // 1) Cuando el usuario hace clic en un perfil, se activa
     riskOptions.forEach(button => {
       button.addEventListener("click", () => {
         setSelectedRisk(button.dataset.risk);
       });
     });
 
-    // 2) Cuando el usuario envía el formulario, se calcula el desglose
     form.addEventListener("submit", (event) => {
       event.preventDefault();
-
       const amount = Number(amountInput.value);
 
       if (!amount || amount <= 0) {
@@ -598,16 +1117,229 @@
       }
 
       const profile = profiles[selectedRisk];
-
-      // Mostrar el total
       totalDisplay.textContent = formatMoney(amount);
-
-      // Mostrar desglose
       updateBreakdown(amount, profile);
-
-      // Mostrar alerta del asistente
       updateAssistantAlert(amount, profile);
     });
+
+    // ===========================================================
+    // NAVEGACIÓN POR PESTAÑAS
+    // ===========================================================
+    function switchTab(tabName) {
+      // Ocultar todas las pestañas
+      const allTabs = document.querySelectorAll(".tab-content");
+      allTabs.forEach(tab => tab.classList.remove("active"));
+
+      // Desactivar todos los botones
+      const allButtons = document.querySelectorAll(".tab-button");
+      allButtons.forEach(btn => btn.classList.remove("active"));
+
+      // Mostrar la pestaña seleccionada
+      document.getElementById(tabName).classList.add("active");
+
+      // Activar el botón correspondiente
+      event.target.classList.add("active");
+
+      // Si es la pestaña de precios, cargar los datos
+      if (tabName === "precios") {
+        loadCryptoPrices();
+      }
+
+      // Si es la pestaña de DCA, cargar activos
+      if (tabName === "dca") {
+        loadDCAAssets();
+      }
+    }
+
+    // ===========================================================
+    // COINGECKO API - PRECIOS EN TIEMPO REAL
+    // ===========================================================
+    // Configuración de las criptomonedas que queremos mostrar
+    const cryptoList = [
+      {
+        id: "tether",
+        name: "USDT (Dólar Digital)",
+        description: "Moneda estable equivalente a 1 USD. Protege de volatilidad."
+      },
+      {
+        id: "usd-coin",
+        name: "USDC (Moneda Estable)",
+        description: "Otra moneda estable 1:1 con el USD. Más regulada que USDT."
+      },
+      {
+        id: "bitcoin",
+        name: "Bitcoin (BTC)",
+        description: "Criptomoneda original. Almacén de valor digital."
+      },
+      {
+        id: "ethereum",
+        name: "Ethereum (ETH)",
+        description: "Red de contratos inteligentes. Base de muchas apps cripto."
+      }
+    ];
+
+    async function loadCryptoPrices() {
+      const container = document.getElementById("cryptoContainer");
+      container.innerHTML = "<p class='loading'>Cargando precios...</p>";
+
+      try {
+        // Construir la URL con los IDs de las criptos
+        const ids = cryptoList.map(c => c.id).join(",");
+        
+        // LLAMADA A COINGECKO API
+        // Esta API es pública y gratuita. Trae información de criptomonedas en tiempo real.
+        // No necesita autenticación.
+        const response = await fetch(
+          `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`
+        );
+
+        if (!response.ok) throw new Error("Error al conectar con CoinGecko");
+
+        const data = await response.json();
+
+        container.innerHTML = "";
+
+        // Llenar cada tarjeta con la información obtenida
+        cryptoList.forEach(crypto => {
+          const priceData = data[crypto.id];
+
+          if (priceData) {
+            const price = priceData.usd;
+            const change24h = priceData.usd_24h_change;
+            const isPositive = change24h >= 0;
+
+            const card = document.createElement("div");
+            card.className = "crypto-card";
+            card.innerHTML = `
+              <div class="crypto-info">
+                <p class="crypto-name">${crypto.name}</p>
+                <p class="crypto-description">${crypto.description}</p>
+              </div>
+              <div class="crypto-price">
+                <p class="price-value">$${price.toFixed(2)}</p>
+                <p class="price-change ${isPositive ? "positive" : "negative"}">
+                  ${isPositive ? "↑" : "↓"} ${Math.abs(change24h).toFixed(2)}%
+                </p>
+              </div>
+            `;
+            container.appendChild(card);
+          }
+        });
+
+        // Programar recarga cada 30 segundos
+        setTimeout(loadCryptoPrices, 30000);
+
+      } catch (error) {
+        container.innerHTML = `
+          <div class="alert warning" style="grid-column: 1/-1;">
+            <strong>Error al cargar precios:</strong> Verifica tu conexión a internet.
+            Los precios se intentarán cargar nuevamente en 30 segundos.
+          </div>
+        `;
+        console.error(error);
+        setTimeout(loadCryptoPrices, 30000);
+      }
+    }
+
+    // ===========================================================
+    // PLAN AUTOMÁTICO - DCA (DOLLAR COST AVERAGING)
+    // ===========================================================
+    function calculateDCA() {
+      const amount = Number(document.getElementById("dcaAmount").value);
+      const frequency = document.getElementById("dcaFrequency").value;
+
+      if (!amount || amount <= 0) {
+        alert("Ingresa un monto válido.");
+        return;
+      }
+
+      // Calcular frecuencia en meses
+      // Semanal = 4.3 veces por mes (52 semanas / 12 meses)
+      // Mensual = 1 vez por mes
+      const frequencyPerMonth = frequency === "weekly" ? 4.3 : 1;
+
+      // Proyecciones: 6 meses y 12 meses
+      const months6 = Math.round(amount * frequencyPerMonth * 6);
+      const months12 = Math.round(amount * frequencyPerMonth * 12);
+
+      // Mostrar resultados
+      const projection = document.getElementById("dcaProjection");
+      projection.innerHTML = `
+        <div class="projection-item">
+          <div>
+            <div class="projection-period">En 6 meses</div>
+            <div style="font-size: 0.9rem; color: var(--muted);">Habrás ahorrado:</div>
+          </div>
+          <div class="projection-value">${formatMoney(months6)}</div>
+        </div>
+        <div class="projection-bar">
+          <div class="projection-bar-fill" style="width: 50%;"></div>
+        </div>
+
+        <div class="projection-item">
+          <div>
+            <div class="projection-period">En 1 año</div>
+            <div style="font-size: 0.9rem; color: var(--muted);">Habrás ahorrado:</div>
+          </div>
+          <div class="projection-value">${formatMoney(months12)}</div>
+        </div>
+        <div class="projection-bar">
+          <div class="projection-bar-fill" style="width: 100%;"></div>
+        </div>
+
+        <div style="margin-top: 12px; padding: 12px; background: var(--secondary-soft); border-radius: 8px; border: 1px solid rgba(15, 159, 124, 0.2);">
+          <p style="margin: 0; font-size: 0.9rem; color: #155a49;">
+            <strong>Ahorro total anual:</strong> ${formatMoney(amount * frequencyPerMonth * 12)}<br>
+            <strong>Frecuencia:</strong> ${frequency === "weekly" ? "Semanal (cada 7 días)" : "Mensual (cada 30 días)"}
+          </p>
+        </div>
+      `;
+    }
+
+    function loadDCAAssets() {
+      const container = document.getElementById("dcaAssets");
+      container.innerHTML = `
+        <div class="education-card">
+          <h4 class="education-title">Bitcoin (BTC)</h4>
+          <p class="education-content">
+            La criptomoneda original. Buena para largo plazo. Altamente volátil pero con tendencia
+            alcista histórica.
+          </p>
+        </div>
+
+        <div class="education-card">
+          <h4 class="education-title">Ethereum (ETH)</h4>
+          <p class="education-content">
+            Red de programas (contratos inteligentes). Más tecnología que Bitcoin.
+            También volátil pero innovador.
+          </p>
+        </div>
+
+        <div class="education-card">
+          <h4 class="education-title">USDT / USDC</h4>
+          <p class="education-content">
+            Criptomonedas estables (1 USD = 1 coin). Ideales si quieres seguridad.
+            No ganas mucho pero no pierdes.
+          </p>
+        </div>
+
+        <div class="education-card">
+          <h4 class="education-title">ETF S&P 500</h4>
+          <p class="education-content">
+            Las 500 empresas más grandes de EE. UU. (Apple, Microsoft, Google, etc.).
+            Menos volátil que cripto. Dividendos anuales.
+          </p>
+        </div>
+      `;
+    }
+
+    // ===========================================================
+    // CHECKLIST INTERACTIVO
+    // ===========================================================
+    function toggleChecklistItem(element) {
+      element.classList.toggle("checked");
+    }
+
   </script>
 </body>
 </html>
